@@ -1,0 +1,13 @@
+{
+	"name": "vasek-purchart/console-errors-bundle",
+	"description": "Logging of exceptions and error codes for Symfony Console",
+	"keywords": ["console", "error", "exception", "debug", "logging", "symfony", "bundle"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Vašek Purchart",
+			"email": "me@vasekpurchart.cz",
+			"homepage": "http://vasekpurchart.cz"
+		}
+	]
+}
