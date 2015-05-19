@@ -1,1 +1,14 @@
 services:
+    vasek_purchart.console_errors.console.console_error_listener:
+        class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleErrorListener
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: console.terminate }
+
+    vasek_purchart.console_errors.console.console_exception_listener:
+        class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExceptionListener
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: console.exception }
