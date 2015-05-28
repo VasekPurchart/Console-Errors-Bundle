@@ -20,7 +20,7 @@ And these are corresponding log entries:
 Installation
 -----------
 
-Install with [Composer](http://getcomposer.org/):
+Install package [`vasek-purchart/console-errors-bundle`](https://packagist.org/packages/vasek-purchart/console-errors-bundle) with [Composer](https://getcomposer.org/):
 
 ```bash
 composer require vasek-purchart/console-errors-bundle
