@@ -33,6 +33,18 @@ console_errors:
         listener_priority:    0
 ```
 
+You can also override services used internally, for example if you use a non standard logger, you can provide custom instance with an [alias](http://symfony.com/doc/current/components/dependency_injection/advanced.html#aliasing):
+
+```yaml
+services:
+    my_logger:
+        class: Monolog\Logger
+        arguments:
+			- 'my_channel'
+
+    vasek_purchart.console_errors.console.logger: @my_logger
+```
+
 Installation
 -----------
 
