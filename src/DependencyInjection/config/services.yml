@@ -4,11 +4,17 @@ services:
         arguments:
             - @logger
         tags:
-            - { name: kernel.event_listener, event: console.terminate }
+            -
+                name: kernel.event_listener
+                event: console.terminate
+                priority: %vasek_purchart.console_errors.error.listener_priority%
 
     vasek_purchart.console_errors.console.console_exception_listener:
         class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExceptionListener
         arguments:
             - @logger
         tags:
-            - { name: kernel.event_listener, event: console.exception }
+            -
+                name: kernel.event_listener
+                event: console.exception
+                priority: %vasek_purchart.console_errors.exception.listener_priority%

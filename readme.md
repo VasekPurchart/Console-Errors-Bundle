@@ -17,6 +17,22 @@ And these are corresponding log entries:
 [2015-05-19 12:42:13] app.ERROR: Command `hello:world` exited with status code 123 [] []
 ```
 
+Configuration
+-------------
+
+Configuration structure with listed default values:
+
+```yaml
+console_errors:
+    exceptions:
+        # Priority with which the listener will be registered.
+        listener_priority:    0
+
+    errors:
+        # Priority with which the listener will be registered.
+        listener_priority:    0
+```
+
 Installation
 -----------
 
