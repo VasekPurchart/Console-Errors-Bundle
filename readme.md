@@ -1,5 +1,5 @@
 Console Errors Bundle
-=======================
+=====================
 
 **Logging of exceptions and error codes for [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html).**
 
@@ -50,7 +50,7 @@ services:
 ```
 
 Installation
------------
+------------
 
 Install package [`vasek-purchart/console-errors-bundle`](https://packagist.org/packages/vasek-purchart/console-errors-bundle) with [Composer](https://getcomposer.org/):
 
@@ -69,4 +69,3 @@ public function registerBundles()
 	);
 }
 ```
-
