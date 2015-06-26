@@ -25,10 +25,14 @@ Configuration structure with listed default values:
 ```yaml
 console_errors:
     exceptions:
+        # Enable logging for exceptions.
+        enabled:              true
         # Priority with which the listener will be registered.
         listener_priority:    0
 
     errors:
+        # Enable logging for errors (non zero exit codes).
+        enabled:              true
         # Priority with which the listener will be registered.
         listener_priority:    0
 ```
