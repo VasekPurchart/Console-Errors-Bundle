@@ -1,0 +1,10 @@
+services:
+    vasek_purchart.console_errors.console.console_error_listener:
+        class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleErrorListener
+        arguments:
+            - @vasek_purchart.console_errors.console.logger
+        tags:
+            -
+                name: kernel.event_listener
+                event: console.terminate
+                priority: %vasek_purchart.console_errors.error.listener_priority%
