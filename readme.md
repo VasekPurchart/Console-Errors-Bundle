@@ -37,6 +37,12 @@ console_errors:
         listener_priority:    0
 ```
 
+Symfony by default always converts errors to PHP exceptions. Warnings and notices are converted by default only in development environment. If you want to configure your application to always convert warnings and notices to exceptions use the `debug.error_handler.throw_at` parameter (see [PHP manual](http://php.net/manual/en/errorfunc.constants.php) for other available values):
+```yaml
+parameters:
+    debug.error_handler.throw_at: -1
+```
+
 You can also override services used internally, for example if you use a non standard logger, you can provide custom instance with an [alias](http://symfony.com/doc/current/components/dependency_injection/advanced.html#aliasing):
 
 ```yaml
