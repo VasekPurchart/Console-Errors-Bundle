@@ -19,34 +19,6 @@ class ConsoleExceptionListener
 
 	public function onConsoleException(ConsoleExceptionEvent $event)
 	{
-		$application = $event->getCommand()->getApplication();
-
-		if (ConsoleInternalApplicationRun::isInternalApplicationRun($application)) {
-			return $this->handleInternalApplicationRunException($event);
-		}
-
-		return $this->handleUncaughtException($event);
-	}
-
-	private function handleInternalApplicationRunException(ConsoleExceptionEvent $event)
-	{
-		$command = $event->getCommand();
-		$exception = $event->getException();
-
-		$message = sprintf(
-			'[Application run internally] %s: %s at %s line %s while running console command `%s`',
-			get_class($exception),
-			$exception->getMessage(),
-			$exception->getFile(),
-			$exception->getLine(),
-			$command->getName()
-		);
-
-		$this->logger->debug($message);
-	}
-
-	private function handleUncaughtException(ConsoleExceptionEvent $event)
-	{
 		$command = $event->getCommand();
 		$exception = $event->getException();
 

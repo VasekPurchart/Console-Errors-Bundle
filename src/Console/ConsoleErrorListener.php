@@ -32,15 +32,8 @@ class ConsoleErrorListener
 			$event->setExitCode($statusCode);
 		}
 
-		$message = 'Command `%s` exited with status code %d';
-		$level = LogLevel::ERROR;
-		if (ConsoleInternalApplicationRun::isInternalApplicationRun($event->getCommand()->getApplication())) {
-			$level = LogLevel::DEBUG;
-			$message = '[Application run internally] ' . $message;
-		}
-
-		$this->logger->log($level, sprintf(
-			$message,
+		$this->logger->log(LogLevel::ERROR, sprintf(
+			'Command `%s` exited with status code %d',
 			$command->getName(),
 			$statusCode
 		));
