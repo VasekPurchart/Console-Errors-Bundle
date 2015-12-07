@@ -2,11 +2,11 @@ services:
     vasek_purchart.console_errors.console.console_exception_listener:
         class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExceptionListener
         arguments:
-            - @vasek_purchart.console_errors.console.logger
+            - '@vasek_purchart.console_errors.console.logger'
         tags:
             -
                 name: kernel.event_listener
                 event: console.exception
                 priority: %vasek_purchart.console_errors.exception.listener_priority%
 
-    vasek_purchart.console_errors.console.logger: @logger
+    vasek_purchart.console_errors.console.logger: '@logger'
