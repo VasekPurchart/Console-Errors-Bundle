@@ -9,7 +9,7 @@ use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConsoleExceptionListenerTest extends \PHPUnit_Framework_TestCase
+class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 {
 
 	public function testLogError()
@@ -18,7 +18,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit_Framework_TestCase
 		$message = 'Foobar!';
 		$exception = new \Exception($message);
 
-		$logger = $this->getMock(LoggerInterface::class);
+		$logger = $this->createMock(LoggerInterface::class);
 		$logger
 			->expects($this->once())
 			->method('error')
@@ -28,8 +28,8 @@ class ConsoleExceptionListenerTest extends \PHPUnit_Framework_TestCase
 			), $this->contains($exception, true));
 
 		$command = new Command($commandName);
-		$input = $this->getMock(InputInterface::class);
-		$output = $this->getMock(OutputInterface::class);
+		$input = $this->createMock(InputInterface::class);
+		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleExceptionEvent($command, $input, $output, $exception, 1);
 
 		$listener = new ConsoleExceptionListener($logger);

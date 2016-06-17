@@ -10,7 +10,7 @@ use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConsoleErrorListenerTest extends \PHPUnit_Framework_TestCase
+class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 {
 
 	public function testLogError()
@@ -18,7 +18,7 @@ class ConsoleErrorListenerTest extends \PHPUnit_Framework_TestCase
 		$commandName = 'hello:world';
 		$exitCode = 123;
 
-		$logger = $this->getMock(LoggerInterface::class);
+		$logger = $this->createMock(LoggerInterface::class);
 		$logger
 			->expects($this->once())
 			->method('log')
@@ -28,8 +28,8 @@ class ConsoleErrorListenerTest extends \PHPUnit_Framework_TestCase
 			));
 
 		$command = new Command($commandName);
-		$input = $this->getMock(InputInterface::class);
-		$output = $this->getMock(OutputInterface::class);
+		$input = $this->createMock(InputInterface::class);
+		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
 		$listener = new ConsoleErrorListener($logger);
@@ -41,7 +41,7 @@ class ConsoleErrorListenerTest extends \PHPUnit_Framework_TestCase
 		$commandName = 'hello:world';
 		$exitCode = 999;
 
-		$logger = $this->getMock(LoggerInterface::class);
+		$logger = $this->createMock(LoggerInterface::class);
 		$logger
 			->expects($this->once())
 			->method('log')
@@ -51,8 +51,8 @@ class ConsoleErrorListenerTest extends \PHPUnit_Framework_TestCase
 			));
 
 		$command = new Command($commandName);
-		$input = $this->getMock(InputInterface::class);
-		$output = $this->getMock(OutputInterface::class);
+		$input = $this->createMock(InputInterface::class);
+		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
 		$listener = new ConsoleErrorListener($logger);
@@ -64,14 +64,14 @@ class ConsoleErrorListenerTest extends \PHPUnit_Framework_TestCase
 		$commandName = 'hello:world';
 		$exitCode = 0;
 
-		$logger = $this->getMock(LoggerInterface::class);
+		$logger = $this->createMock(LoggerInterface::class);
 		$logger
 			->expects($this->never())
 			->method('log');
 
 		$command = new Command($commandName);
-		$input = $this->getMock(InputInterface::class);
-		$output = $this->getMock(OutputInterface::class);
+		$input = $this->createMock(InputInterface::class);
+		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
 		$listener = new ConsoleErrorListener($logger);
