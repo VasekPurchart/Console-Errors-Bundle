@@ -60,6 +60,34 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 		$this->compile();
 	}
 
+	/**
+	 * @return mixed[][]
+	 */
+	public function defaultConfigurationValuesProvider()
+	{
+		return [
+			[
+				ConsoleErrorsExtension::CONTAINER_PARAMETER_ERROR_LISTENER_PRIORITY,
+				Configuration::DEFAULT_ERROR_LISTENER_PRIORITY,
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider defaultConfigurationValuesProvider
+	 *
+	 * @param string $parameterName
+	 * @param mixed $parameterValue
+	 */
+	public function testDefaultConfigurationValues($parameterName, $parameterValue)
+	{
+		$this->load();
+
+		$this->assertContainerBuilderHasParameter($parameterName, $parameterValue);
+
+		$this->compile();
+	}
+
 	public function testConfigureListenerPriority()
 	{
 		$this->load([

@@ -7,6 +7,9 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 class Configuration implements \Symfony\Component\Config\Definition\ConfigurationInterface
 {
 
+	const DEFAULT_ERROR_LISTENER_PRIORITY = 0;
+	const DEFAULT_EXCEPTION_LISTENER_PRIORITY = 0;
+
 	const PARAMETER_ERROR_ENABLED = 'enabled';
 	const PARAMETER_ERROR_LISTENER_PRIORITY = 'listener_priority';
 	const PARAMETER_EXCEPTION_ENABLED = 'enabled';
@@ -45,7 +48,7 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 							->end()
 						->integerNode(self::PARAMETER_EXCEPTION_LISTENER_PRIORITY)
 							->info('Priority with which the listener will be registered.')
-							->defaultValue(0)
+							->defaultValue(self::DEFAULT_EXCEPTION_LISTENER_PRIORITY)
 							->end()
 						->end()
 					->end()
@@ -58,7 +61,7 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 							->end()
 						->integerNode(self::PARAMETER_ERROR_LISTENER_PRIORITY)
 							->info('Priority with which the listener will be registered.')
-							->defaultValue(0)
+							->defaultValue(self::DEFAULT_ERROR_LISTENER_PRIORITY)
 							->end()
 						->end()
 					->end()
