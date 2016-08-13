@@ -34,6 +34,8 @@ console_errors:
     errors:
         # Enable logging for errors (non zero exit codes).
         enabled: true
+        # Log level with which errors should be logged (accepts string or integer values).
+        log_level: error
         # Priority with which the listener will be registered.
         listener_priority: 0
 ```

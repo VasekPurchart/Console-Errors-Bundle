@@ -18,11 +18,12 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$commandName = 'hello:world';
 		$exitCode = 123;
 
+		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
 			->expects($this->once())
 			->method('log')
-			->with(LogLevel::ERROR, $this->logicalAnd(
+			->with($logLevel, $this->logicalAnd(
 				$this->stringContains($commandName),
 				$this->stringContains((string) $exitCode)
 			));
@@ -32,7 +33,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
-		$listener = new ConsoleErrorListener($logger);
+		$listener = new ConsoleErrorListener($logger, $logLevel);
 		$listener->onConsoleTerminate($event);
 	}
 
@@ -41,11 +42,12 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$commandName = 'hello:world';
 		$exitCode = 999;
 
+		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
 			->expects($this->once())
 			->method('log')
-			->with(LogLevel::ERROR, $this->logicalAnd(
+			->with($logLevel, $this->logicalAnd(
 				$this->stringContains($commandName),
 				$this->stringContains((string) 255)
 			));
@@ -55,7 +57,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
-		$listener = new ConsoleErrorListener($logger);
+		$listener = new ConsoleErrorListener($logger, $logLevel);
 		$listener->onConsoleTerminate($event);
 	}
 
@@ -74,7 +76,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
-		$listener = new ConsoleErrorListener($logger);
+		$listener = new ConsoleErrorListener($logger, LogLevel::DEBUG);
 		$listener->onConsoleTerminate($event);
 	}
 

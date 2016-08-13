@@ -3,6 +3,7 @@ services:
         class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleErrorListener
         arguments:
             - '@vasek_purchart.console_errors.console.logger'
+            - '%vasek_purchart.console_errors.error.log_level%'
         tags:
             -
                 name: kernel.event_listener
