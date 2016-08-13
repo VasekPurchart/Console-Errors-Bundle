@@ -12,9 +12,20 @@ class ConsoleExceptionListener
 	/** @var \Psr\Log\LoggerInterface */
 	private $logger;
 
-	public function __construct(LoggerInterface $logger)
+	/** @var string|integer */
+	private $logLevel;
+
+	/**
+	 * @param \Psr\Log\LoggerInterface $logger
+	 * @param string|integer $logLevel
+	 */
+	public function __construct(
+		LoggerInterface $logger,
+		$logLevel
+	)
 	{
 		$this->logger = $logger;
+		$this->logLevel = $logLevel;
 	}
 
 	public function onConsoleException(ConsoleExceptionEvent $event)
@@ -31,7 +42,7 @@ class ConsoleExceptionListener
 			$command->getName()
 		);
 
-		$this->logger->error($message, [
+		$this->logger->log($this->logLevel, $message, [
 			'exception' => $exception,
 		]);
 	}

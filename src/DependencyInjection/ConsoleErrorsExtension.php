@@ -12,6 +12,7 @@ class ConsoleErrorsExtension extends \Symfony\Component\HttpKernel\DependencyInj
 	const CONTAINER_PARAMETER_ERROR_LISTENER_PRIORITY = 'vasek_purchart.console_errors.error.listener_priority';
 	const CONTAINER_PARAMETER_ERROR_LOG_LEVEL = 'vasek_purchart.console_errors.error.log_level';
 	const CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY = 'vasek_purchart.console_errors.exception.listener_priority';
+	const CONTAINER_PARAMETER_EXCEPTION_LOG_LEVEL = 'vasek_purchart.console_errors.exception.log_level';
 
 	/**
 	 * @param mixed[] $mergedConfig
@@ -30,6 +31,10 @@ class ConsoleErrorsExtension extends \Symfony\Component\HttpKernel\DependencyInj
 		$container->setParameter(
 			self::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY,
 			$mergedConfig[Configuration::SECTION_EXCEPTIONS][Configuration::PARAMETER_EXCEPTION_LISTENER_PRIORITY]
+		);
+		$container->setParameter(
+			self::CONTAINER_PARAMETER_EXCEPTION_LOG_LEVEL,
+			$mergedConfig[Configuration::SECTION_EXCEPTIONS][Configuration::PARAMETER_EXCEPTION_LOG_LEVEL]
 		);
 
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/config'));

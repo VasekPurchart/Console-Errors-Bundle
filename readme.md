@@ -28,6 +28,8 @@ console_errors:
     exceptions:
         # Enable logging for exceptions.
         enabled: true
+        # Log level with which exceptions should be logged (accepts string or integer values).
+        log_level: error
         # Priority with which the listener will be registered.
         listener_priority: 0
 

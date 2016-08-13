@@ -13,12 +13,14 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 	const DEFAULT_ERROR_LISTENER_PRIORITY = 0;
 	const DEFAULT_ERROR_LOG_LEVEL = LogLevel::ERROR;
 	const DEFAULT_EXCEPTION_LISTENER_PRIORITY = 0;
+	const DEFAULT_EXCEPTION_LOG_LEVEL = LogLevel::ERROR;
 
 	const PARAMETER_ERROR_ENABLED = 'enabled';
 	const PARAMETER_ERROR_LISTENER_PRIORITY = 'listener_priority';
 	const PARAMETER_ERROR_LOG_LEVEL = 'log_level';
 	const PARAMETER_EXCEPTION_ENABLED = 'enabled';
 	const PARAMETER_EXCEPTION_LISTENER_PRIORITY = 'listener_priority';
+	const PARAMETER_EXCEPTION_LOG_LEVEL = 'log_level';
 
 	const SECTION_ERRORS = 'errors';
 	const SECTION_EXCEPTIONS = 'exceptions';
@@ -51,6 +53,11 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 							->info('Enable logging for exceptions.')
 							->defaultTrue()
 							->end()
+						->append($this->createLogLevelNode(
+							self::PARAMETER_EXCEPTION_LOG_LEVEL,
+							'Log level with which exceptions should be logged (accepts string or integer values).',
+							self::DEFAULT_EXCEPTION_LOG_LEVEL
+						))
 						->integerNode(self::PARAMETER_EXCEPTION_LISTENER_PRIORITY)
 							->info('Priority with which the listener will be registered.')
 							->defaultValue(self::DEFAULT_EXCEPTION_LISTENER_PRIORITY)

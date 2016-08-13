@@ -70,6 +70,10 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY,
 				Configuration::DEFAULT_EXCEPTION_LISTENER_PRIORITY,
 			],
+			[
+				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LOG_LEVEL,
+				Configuration::DEFAULT_EXCEPTION_LOG_LEVEL,
+			],
 		];
 	}
 
@@ -99,6 +103,71 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		$this->assertContainerBuilderHasParameter(ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY, 123);
 
 		$this->compile();
+	}
+
+	/**
+	 * @return mixed[][]
+	 */
+	public function logLevelProvider()
+	{
+		return [
+			['error', 'error'],
+			['debug', 'debug'],
+			['ERROR', 'error'],
+			[100, 100],
+			[999, 999],
+		];
+	}
+
+	/**
+	 * @dataProvider logLevelProvider
+	 *
+	 * @param string|integer $inputLogLevel
+	 * @param string|integer $normalizedValueLogLevel
+	 */
+	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel)
+	{
+		$this->load([
+			'exceptions' => [
+				'log_level' => $inputLogLevel,
+			],
+		]);
+
+		$this->assertContainerBuilderHasParameter(
+			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LOG_LEVEL,
+			$normalizedValueLogLevel
+		);
+
+		$this->compile();
+	}
+
+	/**
+	 * @return mixed[][]
+	 */
+	public function invalidLogLevelProvider()
+	{
+		return [
+			['lorem'],
+			['LOREM'],
+			[100.0],
+			[null],
+		];
+	}
+
+	/**
+	 * @dataProvider invalidLogLevelProvider
+	 *
+	 * @param string|integer $inputLogLevel
+	 */
+	public function testConfigureLogLevelInvalidValues($inputLogLevel)
+	{
+		$this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
+
+		$this->load([
+			'exceptions' => [
+				'log_level' => $inputLogLevel,
+			],
+		]);
 	}
 
 }
