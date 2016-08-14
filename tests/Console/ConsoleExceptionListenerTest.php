@@ -2,6 +2,7 @@
 
 namespace VasekPurchart\ConsoleErrorsBundle\Console;
 
+use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 
 use Symfony\Component\Console\Command\Command;
@@ -18,11 +19,12 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 		$message = 'Foobar!';
 		$exception = new \Exception($message);
 
+		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
 			->expects($this->once())
-			->method('error')
-			->with($this->logicalAnd(
+			->method('log')
+			->with($logLevel, $this->logicalAnd(
 				$this->stringContains($commandName),
 				$this->stringContains($message)
 			), $this->contains($exception, true));
@@ -32,7 +34,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleExceptionEvent($command, $input, $output, $exception, 1);
 
-		$listener = new ConsoleExceptionListener($logger);
+		$listener = new ConsoleExceptionListener($logger, $logLevel);
 		$listener->onConsoleException($event);
 	}
 
