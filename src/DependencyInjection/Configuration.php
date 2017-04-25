@@ -90,7 +90,7 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 
 	/**
 	 * @param string $parameterName
-	 * @param string$parameterInfo
+	 * @param string $parameterInfo
 	 * @param string|integer $defaultValue
 	 * @return \Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition
 	 */
