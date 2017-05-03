@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
 use VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExceptionListener;
@@ -10,7 +12,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @return \Symfony\Component\DependencyInjection\Extension\ExtensionInterface[]
 	 */
-	protected function getContainerExtensions()
+	protected function getContainerExtensions(): array
 	{
 		return [
 			new ConsoleErrorsExtension(),
@@ -63,7 +65,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @return mixed[][]
 	 */
-	public function defaultConfigurationValuesProvider()
+	public function defaultConfigurationValuesProvider(): array
 	{
 		return [
 			[
@@ -83,7 +85,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 * @param string $parameterName
 	 * @param mixed $parameterValue
 	 */
-	public function testDefaultConfigurationValues($parameterName, $parameterValue)
+	public function testDefaultConfigurationValues(string $parameterName, $parameterValue)
 	{
 		$this->load();
 
@@ -108,7 +110,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @return mixed[][]
 	 */
-	public function logLevelProvider()
+	public function logLevelProvider(): array
 	{
 		return [
 			['error', 'error'],
@@ -144,7 +146,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @return mixed[][]
 	 */
-	public function invalidLogLevelProvider()
+	public function invalidLogLevelProvider(): array
 	{
 		return [
 			['lorem'],

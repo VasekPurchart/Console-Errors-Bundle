@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
 use Psr\Log\LogLevel;
@@ -28,18 +30,12 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 	/** @var string */
 	private $rootNode;
 
-	/**
-	 * @param string $rootNode
-	 */
-	public function __construct($rootNode)
+	public function __construct(string $rootNode)
 	{
 		$this->rootNode = $rootNode;
 	}
 
-	/**
-	 * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
-	 */
-	public function getConfigTreeBuilder()
+	public function getConfigTreeBuilder(): TreeBuilder
 	{
 		$treeBuilder = new TreeBuilder();
 		$rootNode = $treeBuilder->root($this->rootNode);
@@ -94,7 +90,7 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 	 * @param string|integer $defaultValue
 	 * @return \Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition
 	 */
-	private function createLogLevelNode($parameterName, $parameterInfo, $defaultValue)
+	private function createLogLevelNode(string $parameterName, string $parameterInfo, $defaultValue): ScalarNodeDefinition
 	{
 		$logLevelNode = new ScalarNodeDefinition($parameterName);
 		$logLevelNode
@@ -102,12 +98,12 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 			->defaultValue($defaultValue)
 			->beforeNormalization()
 				->ifString()
-				->then(function ($value) {
+				->then(function (string $value): string {
 					return strtolower($value);
 				})
 				->end()
 			->validate()
-				->ifTrue(function ($value) {
+				->ifTrue(function ($value): bool {
 					switch (true) {
 						case is_int($value):
 							return false;

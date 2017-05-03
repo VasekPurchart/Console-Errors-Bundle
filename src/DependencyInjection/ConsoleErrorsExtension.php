@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -51,7 +53,7 @@ class ConsoleErrorsExtension extends \Symfony\Component\HttpKernel\DependencyInj
 	 * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
 	 * @return \VasekPurchart\ConsoleErrorsBundle\DependencyInjection\Configuration
 	 */
-	public function getConfiguration(array $config, ContainerBuilder $container)
+	public function getConfiguration(array $config, ContainerBuilder $container): Configuration
 	{
 		return new Configuration(
 			$this->getAlias()
