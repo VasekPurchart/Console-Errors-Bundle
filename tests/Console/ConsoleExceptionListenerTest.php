@@ -6,7 +6,6 @@ namespace VasekPurchart\ConsoleErrorsBundle\Console;
 
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\Console\Input\InputInterface;

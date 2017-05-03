@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
 use Psr\Log\LogLevel;
-
 use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
@@ -87,7 +86,7 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 	/**
 	 * @param string $parameterName
 	 * @param string $parameterInfo
-	 * @param string|integer $defaultValue
+	 * @param string|int $defaultValue
 	 * @return \Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition
 	 */
 	private function createLogLevelNode(string $parameterName, string $parameterInfo, $defaultValue): ScalarNodeDefinition

@@ -124,8 +124,8 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @dataProvider logLevelProvider
 	 *
-	 * @param string|integer $inputLogLevel
-	 * @param string|integer $normalizedValueLogLevel
+	 * @param string|int $inputLogLevel
+	 * @param string|int $normalizedValueLogLevel
 	 */
 	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel)
 	{
@@ -159,7 +159,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @dataProvider invalidLogLevelProvider
 	 *
-	 * @param string|integer $inputLogLevel
+	 * @param string|int $inputLogLevel
 	 */
 	public function testConfigureLogLevelInvalidValues($inputLogLevel)
 	{
