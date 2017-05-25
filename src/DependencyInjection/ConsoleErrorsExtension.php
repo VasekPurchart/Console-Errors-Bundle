@@ -38,6 +38,7 @@ class ConsoleErrorsExtension extends \Symfony\Component\HttpKernel\DependencyInj
 		);
 
 		$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/config'));
+		$loader->load('services.yml');
 		if ($mergedConfig[Configuration::SECTION_EXCEPTIONS][Configuration::PARAMETER_EXCEPTION_ENABLED]) {
 			$loader->load('exception_listener.yml');
 		}

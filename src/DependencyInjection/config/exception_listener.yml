@@ -9,5 +9,3 @@ services:
                 name: kernel.event_listener
                 event: console.exception
                 priority: '%vasek_purchart.console_errors.exception.listener_priority%'
-
-    vasek_purchart.console_errors.console.logger: '@logger'

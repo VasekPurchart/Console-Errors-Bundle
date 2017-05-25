@@ -1,0 +1,2 @@
+services:
+    vasek_purchart.console_errors.console.logger: '@logger'
