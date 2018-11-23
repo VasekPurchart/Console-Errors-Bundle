@@ -3,11 +3,11 @@ Console Errors Bundle
 
 **Logging of exceptions and error codes for [Symfony Console](http://symfony.com/doc/current/components/console/introduction.html).**
 
-Symfony by default logs uncaught exceptions in your controllers, but does not do this for Console commands. This bundle ensures all uncaught exceptions and errors are logged.
+This bundle ensures all uncaught exceptions and errors are logged in the same way as exceptions from controllers.
 
-It also logs all command executions which ended with non-zero return code.
+It also logs all command executions which ended with non-zero exit code.
 
-Here is an example showing an exception, error and non-zero return code:
+Here is an example showing an exception, error and non-zero exit code:
 ![Error reports from Console](docs/console-errors.png)
 
 And these are corresponding log entries:
@@ -33,10 +33,10 @@ console_errors:
         # Priority with which the listener will be registered.
         listener_priority: 0
 
-    errors:
-        # Enable logging for errors (non zero exit codes).
+    exit_code:
+        # Enable logging for non-zero exit codes.
         enabled: true
-        # Log level with which errors should be logged (accepts string or integer values).
+        # Log level with which exit codes should be logged (accepts string or integer values).
         log_level: error
         # Priority with which the listener will be registered.
         listener_priority: 0
