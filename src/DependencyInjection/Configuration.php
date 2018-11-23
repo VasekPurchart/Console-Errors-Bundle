@@ -11,20 +11,20 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 class Configuration implements \Symfony\Component\Config\Definition\ConfigurationInterface
 {
 
-	const DEFAULT_ERROR_LISTENER_PRIORITY = 0;
-	const DEFAULT_ERROR_LOG_LEVEL = LogLevel::ERROR;
-	const DEFAULT_EXCEPTION_LISTENER_PRIORITY = 0;
-	const DEFAULT_EXCEPTION_LOG_LEVEL = LogLevel::ERROR;
+	public const DEFAULT_ERROR_LISTENER_PRIORITY = 0;
+	public const DEFAULT_ERROR_LOG_LEVEL = LogLevel::ERROR;
+	public const DEFAULT_EXCEPTION_LISTENER_PRIORITY = 0;
+	public const DEFAULT_EXCEPTION_LOG_LEVEL = LogLevel::ERROR;
 
-	const PARAMETER_ERROR_ENABLED = 'enabled';
-	const PARAMETER_ERROR_LISTENER_PRIORITY = 'listener_priority';
-	const PARAMETER_ERROR_LOG_LEVEL = 'log_level';
-	const PARAMETER_EXCEPTION_ENABLED = 'enabled';
-	const PARAMETER_EXCEPTION_LISTENER_PRIORITY = 'listener_priority';
-	const PARAMETER_EXCEPTION_LOG_LEVEL = 'log_level';
+	public const PARAMETER_ERROR_ENABLED = 'enabled';
+	public const PARAMETER_ERROR_LISTENER_PRIORITY = 'listener_priority';
+	public const PARAMETER_ERROR_LOG_LEVEL = 'log_level';
+	public const PARAMETER_EXCEPTION_ENABLED = 'enabled';
+	public const PARAMETER_EXCEPTION_LISTENER_PRIORITY = 'listener_priority';
+	public const PARAMETER_EXCEPTION_LOG_LEVEL = 'log_level';
 
-	const SECTION_ERRORS = 'errors';
-	const SECTION_EXCEPTIONS = 'exceptions';
+	public const SECTION_ERRORS = 'errors';
+	public const SECTION_EXCEPTIONS = 'exceptions';
 
 	/** @var string */
 	private $rootNode;

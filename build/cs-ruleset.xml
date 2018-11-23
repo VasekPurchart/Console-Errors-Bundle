@@ -2,18 +2,21 @@
 <ruleset name="ConsoleErrorsBundle">
 	<rule ref="../vendor/consistence/coding-standard/Consistence/ruleset.xml">
 		<exclude name="PEAR.WhiteSpace.ObjectOperatorIndent.Incorrect"/><!-- structuring Symfony configuration tree needs indentation -->
-		<exclude name="SlevomatCodingStandard.Classes.ClassConstantVisibility"/><!-- requires 7.1+ -->
-		<exclude name="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/><!-- requires PHP 7.1+ -->
 	</rule>
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
-			<property name="rootNamespaces" type="array" value="
-				src => VasekPurchart\ConsoleErrorsBundle,
-				tests => VasekPurchart\ConsoleErrorsBundle,
-			"/>
+			<property name="rootNamespaces" type="array">
+				<element key="src" value="VasekPurchart\ConsoleErrorsBundle"/>
+				<element key="tests" value="VasekPurchart\ConsoleErrorsBundle"/>
+			</property>>
 		</properties>
 		<exclude-pattern>*/data/*.php</exclude-pattern>
 		<exclude-pattern>*/exceptions/*Exception.php</exclude-pattern>
+	</rule>
+	<rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+		<properties>
+			<property name="enableObjectTypeHint" value="false"/><!-- requires 7.2+ -->
+		</properties>
 	</rule>
 	<rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements">
 		<exclude-pattern>*/data/*.php</exclude-pattern>

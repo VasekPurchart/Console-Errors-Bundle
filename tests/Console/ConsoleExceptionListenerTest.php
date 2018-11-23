@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testLogError()
+	public function testLogError(): void
 	{
 		$commandName = 'hello:world';
 		$message = 'Foobar!';

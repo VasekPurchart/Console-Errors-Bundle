@@ -29,7 +29,7 @@ class ConsoleExceptionListener
 		$this->logLevel = $logLevel;
 	}
 
-	public function onConsoleException(ConsoleExceptionEvent $event)
+	public function onConsoleException(ConsoleExceptionEvent $event): void
 	{
 		$command = $event->getCommand();
 		$exception = $event->getException();

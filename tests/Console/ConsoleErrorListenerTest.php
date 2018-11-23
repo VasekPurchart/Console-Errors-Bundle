@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testLogError()
+	public function testLogError(): void
 	{
 		$commandName = 'hello:world';
 		$exitCode = 123;
@@ -38,7 +38,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$listener->onConsoleTerminate($event);
 	}
 
-	public function testLogErrorExitCodeMax255()
+	public function testLogErrorExitCodeMax255(): void
 	{
 		$commandName = 'hello:world';
 		$exitCode = 999;
@@ -62,7 +62,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$listener->onConsoleTerminate($event);
 	}
 
-	public function testZeroExitCodeDoesNotLog()
+	public function testZeroExitCodeDoesNotLog(): void
 	{
 		$commandName = 'hello:world';
 		$exitCode = 0;

@@ -19,7 +19,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 		];
 	}
 
-	public function testErrorsEnabledByDefault()
+	public function testErrorsEnabledByDefault(): void
 	{
 		$this->load();
 
@@ -32,7 +32,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 		$this->compile();
 	}
 
-	public function testErrorsDisabled()
+	public function testErrorsDisabled(): void
 	{
 		$this->load([
 			'errors' => [
@@ -45,7 +45,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 		$this->compile();
 	}
 
-	public function testErrorsEnabled()
+	public function testErrorsEnabled(): void
 	{
 		$this->load([
 			'errors' => [
@@ -65,7 +65,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	/**
 	 * @return mixed[][]
 	 */
-	public function defaultConfigurationValuesProvider()
+	public function defaultConfigurationValuesProvider(): array
 	{
 		return [
 			[
@@ -85,7 +85,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	 * @param string $parameterName
 	 * @param mixed $parameterValue
 	 */
-	public function testDefaultConfigurationValues(string $parameterName, $parameterValue)
+	public function testDefaultConfigurationValues(string $parameterName, $parameterValue): void
 	{
 		$this->load();
 
@@ -94,7 +94,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 		$this->compile();
 	}
 
-	public function testConfigureListenerPriority()
+	public function testConfigureListenerPriority(): void
 	{
 		$this->load([
 			'errors' => [
@@ -127,7 +127,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	 * @param string|int $inputLogLevel
 	 * @param string|int $normalizedValueLogLevel
 	 */
-	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel)
+	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel): void
 	{
 		$this->load([
 			'errors' => [
@@ -161,7 +161,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	 *
 	 * @param string|int $inputLogLevel
 	 */
-	public function testConfigureLogLevelInvalidValues($inputLogLevel)
+	public function testConfigureLogLevelInvalidValues($inputLogLevel): void
 	{
 		$this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
 

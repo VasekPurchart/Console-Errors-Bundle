@@ -29,7 +29,7 @@ class ConsoleErrorListener
 		$this->logLevel = $logLevel;
 	}
 
-	public function onConsoleTerminate(ConsoleTerminateEvent $event)
+	public function onConsoleTerminate(ConsoleTerminateEvent $event): void
 	{
 		$statusCode = $event->getExitCode();
 		$command = $event->getCommand();

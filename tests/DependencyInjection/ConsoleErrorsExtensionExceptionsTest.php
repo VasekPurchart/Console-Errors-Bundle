@@ -19,7 +19,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		];
 	}
 
-	public function testExceptionsEnabledByDefault()
+	public function testExceptionsEnabledByDefault(): void
 	{
 		$this->load();
 
@@ -32,7 +32,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		$this->compile();
 	}
 
-	public function testExceptionsDisabled()
+	public function testExceptionsDisabled(): void
 	{
 		$this->load([
 			'exceptions' => [
@@ -45,7 +45,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		$this->compile();
 	}
 
-	public function testExceptionsEnabled()
+	public function testExceptionsEnabled(): void
 	{
 		$this->load([
 			'exceptions' => [
@@ -85,7 +85,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 * @param string $parameterName
 	 * @param mixed $parameterValue
 	 */
-	public function testDefaultConfigurationValues(string $parameterName, $parameterValue)
+	public function testDefaultConfigurationValues(string $parameterName, $parameterValue): void
 	{
 		$this->load();
 
@@ -94,7 +94,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		$this->compile();
 	}
 
-	public function testConfigureListenerPriority()
+	public function testConfigureListenerPriority(): void
 	{
 		$this->load([
 			'exceptions' => [
@@ -127,7 +127,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 * @param string|int $inputLogLevel
 	 * @param string|int $normalizedValueLogLevel
 	 */
-	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel)
+	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel): void
 	{
 		$this->load([
 			'exceptions' => [
@@ -161,7 +161,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 *
 	 * @param string|int $inputLogLevel
 	 */
-	public function testConfigureLogLevelInvalidValues($inputLogLevel)
+	public function testConfigureLogLevelInvalidValues($inputLogLevel): void
 	{
 		$this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
 
