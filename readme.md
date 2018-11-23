@@ -23,7 +23,7 @@ Configuration
 Configuration structure with listed default values:
 
 ```yaml
-# app/config/config.yml
+# config/packages/console_errors.yml
 console_errors:
     exceptions:
         # Enable logging for exceptions.
@@ -44,7 +44,7 @@ console_errors:
 
 Symfony by default always converts errors to PHP exceptions. Warnings and notices are converted by default only in development environment. If you want to configure your application to always convert warnings and notices to exceptions use the `debug.error_handler.throw_at` parameter (see [PHP manual](http://php.net/manual/en/errorfunc.constants.php) for other available values):
 ```yaml
-# app/config/config.yml
+# config/packages/framework.yml
 parameters:
     debug.error_handler.throw_at: -1
 ```
@@ -54,11 +54,11 @@ You can also override services used internally, for example if you use a non sta
 ```yaml
 services:
     my_logger:
-        class: Monolog\Logger
+        class: 'Monolog\Logger'
         arguments:
             - 'my_channel'
 
-    vasek_purchart.console_errors.console.logger: @my_logger
+    vasek_purchart.console_errors.console.logger: '@my_logger'
 ```
 
 Installation
@@ -70,14 +70,11 @@ Install package [`vasek-purchart/console-errors-bundle`](https://packagist.org/p
 composer require vasek-purchart/console-errors-bundle
 ```
 
-Register the bundle in your application kernel:
+Register the bundle in your application:
 ```php
-// app/AppKernel.php
-public function registerBundles()
-{
-	return array(
-		// ...
-		new VasekPurchart\ConsoleErrorsBundle\ConsoleErrorsBundle(),
-	);
-}
+// config/bundles.php
+return [
+	// ...
+	VasekPurchart\ConsoleErrorsBundle\ConsoleErrorsBundle::class => ['all' => true],
+];
 ```
