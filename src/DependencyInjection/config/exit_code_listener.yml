@@ -1,6 +1,6 @@
 services:
-    vasek_purchart.console_errors.console.console_error_listener:
-        class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleErrorListener
+    vasek_purchart.console_errors.console.console_exit_code_listener:
+        class: VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExitCodeListener
         arguments:
             - '@vasek_purchart.console_errors.console.logger'
             - '%vasek_purchart.console_errors.error.log_level%'

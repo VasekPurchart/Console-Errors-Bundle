@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
-use VasekPurchart\ConsoleErrorsBundle\Console\ConsoleErrorListener;
+use VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExitCodeListener;
 
-class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase
+class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase
 {
 
 	/**
@@ -23,10 +23,10 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	{
 		$this->load();
 
-		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_error_listener', ConsoleErrorListener::class);
-		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_error_listener', 'kernel.event_listener', [
+		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
+		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
 			'event' => 'console.terminate',
-			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_ERROR_LISTENER_PRIORITY . '%',
+			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY . '%',
 		]);
 
 		$this->compile();
@@ -35,12 +35,12 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	public function testErrorsDisabled(): void
 	{
 		$this->load([
-			'errors' => [
+			'exit_code' => [
 				'enabled' => false,
 			],
 		]);
 
-		$this->assertContainerBuilderNotHasService('vasek_purchart.console_errors.console.console_error_listener');
+		$this->assertContainerBuilderNotHasService('vasek_purchart.console_errors.console.console_exit_code_listener');
 
 		$this->compile();
 	}
@@ -48,15 +48,15 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	public function testErrorsEnabled(): void
 	{
 		$this->load([
-			'errors' => [
+			'exit_code' => [
 				'enabled' => true,
 			],
 		]);
 
-		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_error_listener', ConsoleErrorListener::class);
-		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_error_listener', 'kernel.event_listener', [
+		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
+		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
 			'event' => 'console.terminate',
-			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_ERROR_LISTENER_PRIORITY . '%',
+			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY . '%',
 		]);
 
 		$this->compile();
@@ -69,12 +69,12 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	{
 		return [
 			[
-				ConsoleErrorsExtension::CONTAINER_PARAMETER_ERROR_LISTENER_PRIORITY,
-				Configuration::DEFAULT_ERROR_LISTENER_PRIORITY,
+				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+				Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
 			],
 			[
-				ConsoleErrorsExtension::CONTAINER_PARAMETER_ERROR_LOG_LEVEL,
-				Configuration::DEFAULT_ERROR_LOG_LEVEL,
+				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+				Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
 			],
 		];
 	}
@@ -97,12 +97,12 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	public function testConfigureListenerPriority(): void
 	{
 		$this->load([
-			'errors' => [
+			'exit_code' => [
 				'listener_priority' => 123,
 			],
 		]);
 
-		$this->assertContainerBuilderHasParameter(ConsoleErrorsExtension::CONTAINER_PARAMETER_ERROR_LISTENER_PRIORITY, 123);
+		$this->assertContainerBuilderHasParameter(ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY, 123);
 
 		$this->compile();
 	}
@@ -130,13 +130,13 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel): void
 	{
 		$this->load([
-			'errors' => [
+			'exit_code' => [
 				'log_level' => $inputLogLevel,
 			],
 		]);
 
 		$this->assertContainerBuilderHasParameter(
-			ConsoleErrorsExtension::CONTAINER_PARAMETER_ERROR_LOG_LEVEL,
+			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
 			$normalizedValueLogLevel
 		);
 
@@ -166,7 +166,7 @@ class ConsoleErrorsExtensionErrorsTest extends \Matthias\SymfonyDependencyInject
 		$this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
 
 		$this->load([
-			'errors' => [
+			'exit_code' => [
 				'log_level' => $inputLogLevel,
 			],
 		]);

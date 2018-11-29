@@ -7,7 +7,7 @@ namespace VasekPurchart\ConsoleErrorsBundle\Console;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 
-class ConsoleErrorListener
+class ConsoleExitCodeListener
 {
 
 	/** @var \Psr\Log\LoggerInterface */

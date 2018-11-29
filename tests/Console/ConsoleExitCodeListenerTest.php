@@ -11,7 +11,7 @@ use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
+class ConsoleExitCodeListenerTest extends \PHPUnit\Framework\TestCase
 {
 
 	public function testLogError(): void
@@ -34,7 +34,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
-		$listener = new ConsoleErrorListener($logger, $logLevel);
+		$listener = new ConsoleExitCodeListener($logger, $logLevel);
 		$listener->onConsoleTerminate($event);
 	}
 
@@ -58,7 +58,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
-		$listener = new ConsoleErrorListener($logger, $logLevel);
+		$listener = new ConsoleExitCodeListener($logger, $logLevel);
 		$listener->onConsoleTerminate($event);
 	}
 
@@ -77,7 +77,7 @@ class ConsoleErrorListenerTest extends \PHPUnit\Framework\TestCase
 		$output = $this->createMock(OutputInterface::class);
 		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
 
-		$listener = new ConsoleErrorListener($logger, LogLevel::DEBUG);
+		$listener = new ConsoleExitCodeListener($logger, LogLevel::DEBUG);
 		$listener->onConsoleTerminate($event);
 	}
 

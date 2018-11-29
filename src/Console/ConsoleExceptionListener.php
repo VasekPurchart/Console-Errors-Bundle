@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace VasekPurchart\ConsoleErrorsBundle\Console;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Event\ConsoleExceptionEvent;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
 
 class ConsoleExceptionListener
 {
@@ -29,10 +29,10 @@ class ConsoleExceptionListener
 		$this->logLevel = $logLevel;
 	}
 
-	public function onConsoleException(ConsoleExceptionEvent $event): void
+	public function onConsoleException(ConsoleErrorEvent $event): void
 	{
 		$command = $event->getCommand();
-		$exception = $event->getException();
+		$exception = $event->getError();
 
 		$message = sprintf(
 			'%s: %s (uncaught exception) at %s line %s while running console command `%s`',

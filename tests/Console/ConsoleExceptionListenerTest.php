@@ -7,7 +7,7 @@ namespace VasekPurchart\ConsoleErrorsBundle\Console;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Event\ConsoleExceptionEvent;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -33,7 +33,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 		$command = new Command($commandName);
 		$input = $this->createMock(InputInterface::class);
 		$output = $this->createMock(OutputInterface::class);
-		$event = new ConsoleExceptionEvent($command, $input, $output, $exception, 1);
+		$event = new ConsoleErrorEvent($input, $output, $exception, $command);
 
 		$listener = new ConsoleExceptionListener($logger, $logLevel);
 		$listener->onConsoleException($event);

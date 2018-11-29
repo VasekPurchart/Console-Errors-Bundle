@@ -11,19 +11,19 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 class Configuration implements \Symfony\Component\Config\Definition\ConfigurationInterface
 {
 
-	public const DEFAULT_ERROR_LISTENER_PRIORITY = 0;
-	public const DEFAULT_ERROR_LOG_LEVEL = LogLevel::ERROR;
+	public const DEFAULT_EXIT_CODE_LISTENER_PRIORITY = 0;
+	public const DEFAULT_EXIT_CODE_LOG_LEVEL = LogLevel::ERROR;
 	public const DEFAULT_EXCEPTION_LISTENER_PRIORITY = 0;
 	public const DEFAULT_EXCEPTION_LOG_LEVEL = LogLevel::ERROR;
 
-	public const PARAMETER_ERROR_ENABLED = 'enabled';
-	public const PARAMETER_ERROR_LISTENER_PRIORITY = 'listener_priority';
-	public const PARAMETER_ERROR_LOG_LEVEL = 'log_level';
+	public const PARAMETER_EXIT_CODE_ENABLED = 'enabled';
+	public const PARAMETER_EXIT_CODE_LISTENER_PRIORITY = 'listener_priority';
+	public const PARAMETER_EXIT_CODE_LOG_LEVEL = 'log_level';
 	public const PARAMETER_EXCEPTION_ENABLED = 'enabled';
 	public const PARAMETER_EXCEPTION_LISTENER_PRIORITY = 'listener_priority';
 	public const PARAMETER_EXCEPTION_LOG_LEVEL = 'log_level';
 
-	public const SECTION_ERRORS = 'errors';
+	public const SECTION_EXIT_CODE = 'exit_code';
 	public const SECTION_EXCEPTIONS = 'exceptions';
 
 	/** @var string */
@@ -59,21 +59,21 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 							->end()
 						->end()
 					->end()
-				->arrayNode(self::SECTION_ERRORS)
+				->arrayNode(self::SECTION_EXIT_CODE)
 					->addDefaultsIfNotSet()
 					->children()
-						->scalarNode(self::PARAMETER_ERROR_ENABLED)
-							->info('Enable logging for errors (non zero exit codes).')
+						->scalarNode(self::PARAMETER_EXIT_CODE_ENABLED)
+							->info('Enable logging for non-zero exit codes.')
 							->defaultTrue()
 							->end()
 						->append($this->createLogLevelNode(
-							self::PARAMETER_ERROR_LOG_LEVEL,
-							'Log level with which errors should be logged (accepts string or integer values).',
-							self::DEFAULT_ERROR_LOG_LEVEL
+							self::PARAMETER_EXIT_CODE_LOG_LEVEL,
+							'Log level with which exit codes should be logged (accepts string or integer values).',
+							self::DEFAULT_EXIT_CODE_LOG_LEVEL
 						))
-						->integerNode(self::PARAMETER_ERROR_LISTENER_PRIORITY)
+						->integerNode(self::PARAMETER_EXIT_CODE_LISTENER_PRIORITY)
 							->info('Priority with which the listener will be registered.')
-							->defaultValue(self::DEFAULT_ERROR_LISTENER_PRIORITY)
+							->defaultValue(self::DEFAULT_EXIT_CODE_LISTENER_PRIORITY)
 							->end()
 						->end()
 					->end()
