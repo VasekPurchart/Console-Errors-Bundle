@@ -25,7 +25,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 
 		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exception_listener', ConsoleExceptionListener::class);
 		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exception_listener', 'kernel.event_listener', [
-			'event' => 'console.exception',
+			'event' => 'console.error',
 			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY . '%',
 		]);
 
@@ -55,7 +55,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 
 		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exception_listener', ConsoleExceptionListener::class);
 		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exception_listener', 'kernel.event_listener', [
-			'event' => 'console.exception',
+			'event' => 'console.error',
 			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY . '%',
 		]);
 

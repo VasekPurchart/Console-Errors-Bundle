@@ -7,5 +7,5 @@ services:
         tags:
             -
                 name: kernel.event_listener
-                event: console.exception
+                event: console.error
                 priority: '%vasek_purchart.console_errors.exception.listener_priority%'

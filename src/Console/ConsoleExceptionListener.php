@@ -29,7 +29,17 @@ class ConsoleExceptionListener
 		$this->logLevel = $logLevel;
 	}
 
+	/**
+	 * Keeping this method for BC (of this package) - was renamed to onConsoleError() as part of a bugfix
+	 *
+	 * @param \Symfony\Component\Console\Event\ConsoleErrorEvent $event
+	 */
 	public function onConsoleException(ConsoleErrorEvent $event): void
+	{
+		$this->onConsoleError($event);
+	}
+
+	public function onConsoleError(ConsoleErrorEvent $event): void
 	{
 		$command = $event->getCommand();
 		$exception = $event->getError();
