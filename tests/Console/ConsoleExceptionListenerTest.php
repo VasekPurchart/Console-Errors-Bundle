@@ -66,4 +66,31 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 		);
 	}
 
+	/**
+	 * @dataProvider eventMethodProvider
+	 *
+	 * @param \Closure $methodCallback
+	 */
+	public function testLogErrorWithoutCommand(Closure $methodCallback): void
+	{
+		$message = 'Foobar!';
+		$exception = new \Exception($message);
+
+		$logLevel = LogLevel::DEBUG;
+		$logger = $this->createMock(LoggerInterface::class);
+		$logger
+			->expects($this->once())
+			->method('log')
+			->with($logLevel, $this->stringContains($message), $this->contains($exception, true));
+
+		$input = $this->createMock(InputInterface::class);
+		$output = $this->createMock(OutputInterface::class);
+		$event = new ConsoleErrorEvent($input, $output, $exception, null);
+
+		$methodCallback(
+			new ConsoleExceptionListener($logger, $logLevel),
+			$event
+		);
+	}
+
 }
