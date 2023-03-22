@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
+use Generator;
 use VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExitCodeListener;
 
 class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase
@@ -63,19 +64,17 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	}
 
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function defaultConfigurationValuesDataProvider(): array
+	public function defaultConfigurationValuesDataProvider(): Generator
 	{
-		return [
-			[
-				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
-				Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
-			],
-			[
-				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
-				Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
-			],
+		yield [
+			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+			Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
+		];
+		yield [
+			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+			Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
 		];
 	}
 
@@ -108,17 +107,15 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	}
 
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function logLevelDataProvider(): array
+	public function logLevelDataProvider(): Generator
 	{
-		return [
-			['error', 'error'],
-			['debug', 'debug'],
-			['ERROR', 'error'],
-			[100, 100],
-			[999, 999],
-		];
+		yield ['error', 'error'];
+		yield ['debug', 'debug'];
+		yield ['ERROR', 'error'];
+		yield [100, 100];
+		yield [999, 999];
 	}
 
 	/**
@@ -144,16 +141,14 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	}
 
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function invalidLogLevelDataProvider(): array
+	public function invalidLogLevelDataProvider(): Generator
 	{
-		return [
-			['lorem'],
-			['LOREM'],
-			[100.0],
-			[null],
-		];
+		yield ['lorem'];
+		yield ['LOREM'];
+		yield [100.0];
+		yield [null];
 	}
 
 	/**
