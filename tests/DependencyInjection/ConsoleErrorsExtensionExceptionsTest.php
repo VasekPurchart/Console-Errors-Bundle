@@ -65,7 +65,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @return mixed[][]
 	 */
-	public function defaultConfigurationValuesProvider(): array
+	public function defaultConfigurationValuesDataProvider(): array
 	{
 		return [
 			[
@@ -80,7 +80,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	}
 
 	/**
-	 * @dataProvider defaultConfigurationValuesProvider
+	 * @dataProvider defaultConfigurationValuesDataProvider
 	 *
 	 * @param string $parameterName
 	 * @param mixed $parameterValue
@@ -110,7 +110,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @return mixed[][]
 	 */
-	public function logLevelProvider(): array
+	public function logLevelDataProvider(): array
 	{
 		return [
 			['error', 'error'],
@@ -122,7 +122,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	}
 
 	/**
-	 * @dataProvider logLevelProvider
+	 * @dataProvider logLevelDataProvider
 	 *
 	 * @param string|int $inputLogLevel
 	 * @param string|int $normalizedValueLogLevel
@@ -146,7 +146,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @return mixed[][]
 	 */
-	public function invalidLogLevelProvider(): array
+	public function invalidLogLevelDataProvider(): array
 	{
 		return [
 			['lorem'],
@@ -157,7 +157,7 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	}
 
 	/**
-	 * @dataProvider invalidLogLevelProvider
+	 * @dataProvider invalidLogLevelDataProvider
 	 *
 	 * @param string|int $inputLogLevel
 	 */
