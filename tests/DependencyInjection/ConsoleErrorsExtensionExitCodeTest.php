@@ -111,11 +111,26 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	 */
 	public function logLevelDataProvider(): Generator
 	{
-		yield ['error', 'error'];
-		yield ['debug', 'debug'];
-		yield ['ERROR', 'error'];
-		yield [100, 100];
-		yield [999, 999];
+		yield [
+			'error',
+			'error',
+		];
+		yield [
+			'debug',
+			'debug',
+		];
+		yield [
+			'ERROR',
+			'error',
+		];
+		yield [
+			100,
+			100,
+		];
+		yield [
+			999,
+			999,
+		];
 	}
 
 	/**
@@ -145,10 +160,18 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	 */
 	public function invalidLogLevelDataProvider(): Generator
 	{
-		yield ['lorem'];
-		yield ['LOREM'];
-		yield [100.0];
-		yield [null];
+		yield [
+			'lorem',
+		];
+		yield [
+			'LOREM',
+		];
+		yield [
+			100.0,
+		];
+		yield [
+			null,
+		];
 	}
 
 	/**
