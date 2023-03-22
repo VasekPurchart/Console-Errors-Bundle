@@ -20,7 +20,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return mixed[]|\Generator
 	 */
-	public function eventMethodProvider(): Generator
+	public function eventMethodDataProvider(): Generator
 	{
 		yield 'onConsoleError' => [
 			'methodCallback' => static function (ConsoleExceptionListener $listener, ConsoleErrorEvent $event): void {
@@ -36,7 +36,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @dataProvider eventMethodProvider
+	 * @dataProvider eventMethodDataProvider
 	 *
 	 * @param \Closure $methodCallback
 	 */
@@ -68,7 +68,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @dataProvider eventMethodProvider
+	 * @dataProvider eventMethodDataProvider
 	 *
 	 * @param \Closure $methodCallback
 	 */
