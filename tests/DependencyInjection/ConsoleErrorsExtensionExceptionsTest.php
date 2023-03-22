@@ -69,12 +69,12 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	public function defaultConfigurationValuesDataProvider(): Generator
 	{
 		yield [
-			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY,
-			Configuration::DEFAULT_EXCEPTION_LISTENER_PRIORITY,
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY,
+			'parameterValue' => Configuration::DEFAULT_EXCEPTION_LISTENER_PRIORITY,
 		];
 		yield [
-			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LOG_LEVEL,
-			Configuration::DEFAULT_EXCEPTION_LOG_LEVEL,
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LOG_LEVEL,
+			'parameterValue' => Configuration::DEFAULT_EXCEPTION_LOG_LEVEL,
 		];
 	}
 
@@ -112,24 +112,24 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	public function logLevelDataProvider(): Generator
 	{
 		yield [
-			'error',
-			'error',
+			'inputLogLevel' => 'error',
+			'normalizedValueLogLevel' => 'error',
 		];
 		yield [
-			'debug',
-			'debug',
+			'inputLogLevel' => 'debug',
+			'normalizedValueLogLevel' => 'debug',
 		];
 		yield [
-			'ERROR',
-			'error',
+			'inputLogLevel' => 'ERROR',
+			'normalizedValueLogLevel' => 'error',
 		];
 		yield [
-			100,
-			100,
+			'inputLogLevel' => 100,
+			'normalizedValueLogLevel' => 100,
 		];
 		yield [
-			999,
-			999,
+			'inputLogLevel' => 999,
+			'normalizedValueLogLevel' => 999,
 		];
 	}
 
@@ -161,16 +161,16 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	public function invalidLogLevelDataProvider(): Generator
 	{
 		yield [
-			'lorem',
+			'inputLogLevel' => 'lorem',
 		];
 		yield [
-			'LOREM',
+			'inputLogLevel' => 'LOREM',
 		];
 		yield [
-			100.0,
+			'inputLogLevel' => 100.0,
 		];
 		yield [
-			null,
+			'inputLogLevel' => null,
 		];
 	}
 
