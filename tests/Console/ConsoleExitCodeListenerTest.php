@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VasekPurchart\ConsoleErrorsBundle\Console;
 
+use PHPUnit\Framework\Assert;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -22,11 +23,11 @@ class ConsoleExitCodeListenerTest extends \PHPUnit\Framework\TestCase
 		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
-			->expects($this->once())
+			->expects(self::once())
 			->method('log')
-			->with($logLevel, $this->logicalAnd(
-				$this->stringContains($commandName),
-				$this->stringContains((string) $exitCode)
+			->with($logLevel, Assert::logicalAnd(
+				Assert::stringContains($commandName),
+				Assert::stringContains((string) $exitCode)
 			));
 
 		$command = new Command($commandName);
@@ -46,11 +47,11 @@ class ConsoleExitCodeListenerTest extends \PHPUnit\Framework\TestCase
 		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
-			->expects($this->once())
+			->expects(self::once())
 			->method('log')
-			->with($logLevel, $this->logicalAnd(
-				$this->stringContains($commandName),
-				$this->stringContains((string) 255)
+			->with($logLevel, Assert::logicalAnd(
+				Assert::stringContains($commandName),
+				Assert::stringContains((string) 255)
 			));
 
 		$command = new Command($commandName);
@@ -69,7 +70,7 @@ class ConsoleExitCodeListenerTest extends \PHPUnit\Framework\TestCase
 
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
-			->expects($this->never())
+			->expects(self::never())
 			->method('log');
 
 		$command = new Command($commandName);
