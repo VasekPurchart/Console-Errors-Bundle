@@ -68,11 +68,11 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 */
 	public function defaultConfigurationValuesDataProvider(): Generator
 	{
-		yield [
+		yield 'listener_priority' => [
 			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY,
 			'parameterValue' => Configuration::DEFAULT_EXCEPTION_LISTENER_PRIORITY,
 		];
-		yield [
+		yield 'log_level' => [
 			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LOG_LEVEL,
 			'parameterValue' => Configuration::DEFAULT_EXCEPTION_LOG_LEVEL,
 		];
@@ -111,23 +111,23 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 */
 	public function logLevelDataProvider(): Generator
 	{
-		yield [
+		yield 'lowercase error (as PSR-3 uses)' => [
 			'inputLogLevel' => 'error',
 			'normalizedValueLogLevel' => 'error',
 		];
-		yield [
+		yield 'lowercase debug (as PSR-3 uses)' => [
 			'inputLogLevel' => 'debug',
 			'normalizedValueLogLevel' => 'debug',
 		];
-		yield [
+		yield 'uppercase error (as Monolog uses)' => [
 			'inputLogLevel' => 'ERROR',
 			'normalizedValueLogLevel' => 'error',
 		];
-		yield [
+		yield 'integer based on Monolog value' => [
 			'inputLogLevel' => 100,
 			'normalizedValueLogLevel' => 100,
 		];
-		yield [
+		yield 'arbitrary integer' => [
 			'inputLogLevel' => 999,
 			'normalizedValueLogLevel' => 999,
 		];
@@ -160,16 +160,16 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 */
 	public function invalidLogLevelDataProvider(): Generator
 	{
-		yield [
+		yield 'nonexistent log level as lowercase string' => [
 			'inputLogLevel' => 'lorem',
 		];
-		yield [
+		yield 'nonexistent log level as uppercase string' => [
 			'inputLogLevel' => 'LOREM',
 		];
-		yield [
+		yield 'float value' => [
 			'inputLogLevel' => 100.0,
 		];
-		yield [
+		yield 'null value' => [
 			'inputLogLevel' => null,
 		];
 	}
