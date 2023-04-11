@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VasekPurchart\ConsoleErrorsBundle\Console;
 
+use Generator;
 use PHPUnit\Framework\Assert;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
@@ -15,34 +16,34 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsoleExitCodeListenerTest extends \PHPUnit\Framework\TestCase
 {
 
-	public function testLogError(): void
+	/**
+	 * @return int[][]|\Generator
+	 */
+	public function logErrorDataProvider(): Generator
 	{
-		$commandName = 'hello:world';
-		$exitCode = 123;
+		yield 'exit code lower than 255' => [
+			'exitCode' => 123,
+			'expectedExitCode' => 123,
+		];
 
-		$logLevel = LogLevel::DEBUG;
-		$logger = $this->createMock(LoggerInterface::class);
-		$logger
-			->expects(self::once())
-			->method('log')
-			->with($logLevel, Assert::logicalAnd(
-				Assert::stringContains($commandName),
-				Assert::stringContains((string) $exitCode)
-			));
-
-		$command = new Command($commandName);
-		$input = $this->createMock(InputInterface::class);
-		$output = $this->createMock(OutputInterface::class);
-		$event = new ConsoleTerminateEvent($command, $input, $output, $exitCode);
-
-		$listener = new ConsoleExitCodeListener($logger, $logLevel);
-		$listener->onConsoleTerminate($event);
+		yield 'max exit code is 255' => [
+			'exitCode' => 999,
+			'expectedExitCode' => 255,
+		];
 	}
 
-	public function testLogErrorExitCodeMax255(): void
+	/**
+	 * @dataProvider logErrorDataProvider
+	 *
+	 * @param int $exitCode
+	 * @param int $expectedExitCode
+	 */
+	public function testLogError(
+		int $exitCode,
+		int $expectedExitCode
+	): void
 	{
 		$commandName = 'hello:world';
-		$exitCode = 999;
 
 		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
@@ -51,7 +52,7 @@ class ConsoleExitCodeListenerTest extends \PHPUnit\Framework\TestCase
 			->method('log')
 			->with($logLevel, Assert::logicalAnd(
 				Assert::stringContains($commandName),
-				Assert::stringContains((string) 255)
+				Assert::stringContains((string) $expectedExitCode)
 			));
 
 		$command = new Command($commandName);
