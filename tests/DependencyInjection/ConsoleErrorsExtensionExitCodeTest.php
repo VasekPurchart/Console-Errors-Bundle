@@ -74,49 +74,6 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	/**
 	 * @return mixed[][]|\Generator
 	 */
-	public function defaultConfigurationValuesDataProvider(): Generator
-	{
-		yield 'listener_priority' => [
-			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
-			'parameterValue' => Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
-		];
-		yield 'log_level' => [
-			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
-			'parameterValue' => Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
-		];
-	}
-
-	/**
-	 * @dataProvider defaultConfigurationValuesDataProvider
-	 *
-	 * @param string $parameterName
-	 * @param mixed $parameterValue
-	 */
-	public function testDefaultConfigurationValues(string $parameterName, $parameterValue): void
-	{
-		$this->load();
-
-		$this->assertContainerBuilderHasParameter($parameterName, $parameterValue);
-
-		$this->compile();
-	}
-
-	public function testConfigureListenerPriority(): void
-	{
-		$this->load([
-			'exit_code' => [
-				'listener_priority' => 123,
-			],
-		]);
-
-		$this->assertContainerBuilderHasParameter(ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY, 123);
-
-		$this->compile();
-	}
-
-	/**
-	 * @return mixed[][]|\Generator
-	 */
 	public function logLevelDataProvider(): Generator
 	{
 		yield 'lowercase error (as PSR-3 uses)' => [
@@ -142,23 +99,61 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	}
 
 	/**
-	 * @dataProvider logLevelDataProvider
-	 *
-	 * @param string|int $inputLogLevel
-	 * @param string|int $normalizedValueLogLevel
+	 * @return mixed[][]|\Generator
 	 */
-	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel): void
+	public function configureContainerParameterDataProvider(): Generator
 	{
-		$this->load([
-			'exit_code' => [
-				'log_level' => $inputLogLevel,
-			],
-		]);
+		yield 'default listener_priority' => [
+			'configuration' => [],
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+			'expectedParameterValue' => Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
+		];
 
-		$this->assertContainerBuilderHasParameter(
-			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
-			$normalizedValueLogLevel
-		);
+		yield 'default log_level' => [
+			'configuration' => [],
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+			'expectedParameterValue' => Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
+		];
+
+		yield 'configure listener_priority' => [
+			'configuration' => [
+				'exit_code' => [
+					'listener_priority' => 123,
+				],
+			],
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+			'expectedParameterValue' => 123,
+		];
+
+		foreach ($this->logLevelDataProvider() as $caseName => $caseData) {
+			yield 'configure log_level - ' . $caseName => [
+				'configuration' => [
+					'exit_code' => [
+						'log_level' => $caseData['inputLogLevel'],
+					],
+				],
+				'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+				'expectedParameterValue' => $caseData['normalizedValueLogLevel'],
+			];
+		}
+	}
+
+	/**
+	 * @dataProvider configureContainerParameterDataProvider
+	 *
+	 * @param mixed[][] $configuration
+	 * @param string $parameterName
+	 * @param mixed $expectedParameterValue
+	 */
+	public function testConfigureContainerParameter(
+		array $configuration,
+		string $parameterName,
+		$expectedParameterValue
+	): void
+	{
+		$this->load($configuration);
+
+		$this->assertContainerBuilderHasParameter($parameterName, $expectedParameterValue);
 
 		$this->compile();
 	}
