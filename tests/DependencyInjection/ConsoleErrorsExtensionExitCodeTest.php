@@ -20,9 +20,34 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 		];
 	}
 
-	public function testErrorsEnabledByDefault(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function errorsEnabledDataProvider(): Generator
 	{
-		$this->load();
+		yield 'errors enabled by default' => [
+			'configuration' => [],
+		];
+
+		yield 'errors enabled by configuration' => [
+			'configuration' => [
+				'exit_code' => [
+					'enabled' => true,
+				],
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider errorsEnabledDataProvider
+	 *
+	 * @param mixed[][] $configuration
+	 */
+	public function testErrorsEnabled(
+		array $configuration
+	): void
+	{
+		$this->load($configuration);
 
 		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
 		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
@@ -42,23 +67,6 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 		]);
 
 		$this->assertContainerBuilderNotHasService('vasek_purchart.console_errors.console.console_exit_code_listener');
-
-		$this->compile();
-	}
-
-	public function testErrorsEnabled(): void
-	{
-		$this->load([
-			'exit_code' => [
-				'enabled' => true,
-			],
-		]);
-
-		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
-		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
-			'event' => 'console.terminate',
-			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY . '%',
-		]);
 
 		$this->compile();
 	}

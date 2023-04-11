@@ -20,9 +20,34 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		];
 	}
 
-	public function testExceptionsEnabledByDefault(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function exceptionsEnabledDataProvider(): Generator
 	{
-		$this->load();
+		yield 'exceptions enabled by default' => [
+			'configuration' => [],
+		];
+
+		yield 'exceptions enabled by configuration' => [
+			'configuration' => [
+				'exceptions' => [
+					'enabled' => true,
+				],
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider exceptionsEnabledDataProvider
+	 *
+	 * @param mixed[][] $configuration
+	 */
+	public function testExceptionsEnabled(
+		array $configuration
+	): void
+	{
+		$this->load($configuration);
 
 		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exception_listener', ConsoleExceptionListener::class);
 		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exception_listener', 'kernel.event_listener', [
@@ -42,23 +67,6 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		]);
 
 		$this->assertContainerBuilderNotHasService('vasek_purchart.console_errors.console.console_exception_listener');
-
-		$this->compile();
-	}
-
-	public function testExceptionsEnabled(): void
-	{
-		$this->load([
-			'exceptions' => [
-				'enabled' => true,
-			],
-		]);
-
-		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exception_listener', ConsoleExceptionListener::class);
-		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exception_listener', 'kernel.event_listener', [
-			'event' => 'console.error',
-			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXCEPTION_LISTENER_PRIORITY . '%',
-		]);
 
 		$this->compile();
 	}
