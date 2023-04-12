@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
+use Generator;
 use VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExitCodeListener;
 
 class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase
@@ -19,9 +20,34 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 		];
 	}
 
-	public function testErrorsEnabledByDefault(): void
+	/**
+	 * @return mixed[][]|\Generator
+	 */
+	public function errorsEnabledDataProvider(): Generator
 	{
-		$this->load();
+		yield 'errors enabled by default' => [
+			'configuration' => [],
+		];
+
+		yield 'errors enabled by configuration' => [
+			'configuration' => [
+				'exit_code' => [
+					'enabled' => true,
+				],
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider errorsEnabledDataProvider
+	 *
+	 * @param mixed[][] $configuration
+	 */
+	public function testErrorsEnabled(
+		array $configuration
+	): void
+	{
+		$this->load($configuration);
 
 		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
 		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
@@ -45,119 +71,114 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 		$this->compile();
 	}
 
-	public function testErrorsEnabled(): void
-	{
-		$this->load([
-			'exit_code' => [
-				'enabled' => true,
-			],
-		]);
-
-		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
-		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
-			'event' => 'console.terminate',
-			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY . '%',
-		]);
-
-		$this->compile();
-	}
-
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function defaultConfigurationValuesProvider(): array
+	public function logLevelDataProvider(): Generator
 	{
-		return [
-			[
-				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
-				Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
-			],
-			[
-				ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
-				Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
-			],
+		yield 'lowercase error (as PSR-3 uses)' => [
+			'inputLogLevel' => 'error',
+			'normalizedValueLogLevel' => 'error',
+		];
+		yield 'lowercase debug (as PSR-3 uses)' => [
+			'inputLogLevel' => 'debug',
+			'normalizedValueLogLevel' => 'debug',
+		];
+		yield 'uppercase error (as Monolog uses)' => [
+			'inputLogLevel' => 'ERROR',
+			'normalizedValueLogLevel' => 'error',
+		];
+		yield 'integer based on Monolog value' => [
+			'inputLogLevel' => 100,
+			'normalizedValueLogLevel' => 100,
+		];
+		yield 'arbitrary integer' => [
+			'inputLogLevel' => 999,
+			'normalizedValueLogLevel' => 999,
 		];
 	}
 
 	/**
-	 * @dataProvider defaultConfigurationValuesProvider
+	 * @return mixed[][]|\Generator
+	 */
+	public function configureContainerParameterDataProvider(): Generator
+	{
+		yield 'default listener_priority' => [
+			'configuration' => [],
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+			'expectedParameterValue' => Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
+		];
+
+		yield 'default log_level' => [
+			'configuration' => [],
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+			'expectedParameterValue' => Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
+		];
+
+		yield 'configure listener_priority' => [
+			'configuration' => [
+				'exit_code' => [
+					'listener_priority' => 123,
+				],
+			],
+			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+			'expectedParameterValue' => 123,
+		];
+
+		foreach ($this->logLevelDataProvider() as $caseName => $caseData) {
+			yield 'configure log_level - ' . $caseName => [
+				'configuration' => [
+					'exit_code' => [
+						'log_level' => $caseData['inputLogLevel'],
+					],
+				],
+				'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+				'expectedParameterValue' => $caseData['normalizedValueLogLevel'],
+			];
+		}
+	}
+
+	/**
+	 * @dataProvider configureContainerParameterDataProvider
 	 *
+	 * @param mixed[][] $configuration
 	 * @param string $parameterName
-	 * @param mixed $parameterValue
+	 * @param mixed $expectedParameterValue
 	 */
-	public function testDefaultConfigurationValues(string $parameterName, $parameterValue): void
+	public function testConfigureContainerParameter(
+		array $configuration,
+		string $parameterName,
+		$expectedParameterValue
+	): void
 	{
-		$this->load();
+		$this->load($configuration);
 
-		$this->assertContainerBuilderHasParameter($parameterName, $parameterValue);
-
-		$this->compile();
-	}
-
-	public function testConfigureListenerPriority(): void
-	{
-		$this->load([
-			'exit_code' => [
-				'listener_priority' => 123,
-			],
-		]);
-
-		$this->assertContainerBuilderHasParameter(ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY, 123);
+		$this->assertContainerBuilderHasParameter($parameterName, $expectedParameterValue);
 
 		$this->compile();
 	}
 
 	/**
-	 * @return mixed[][]
+	 * @return mixed[][]|\Generator
 	 */
-	public function logLevelProvider(): array
+	public function invalidLogLevelDataProvider(): Generator
 	{
-		return [
-			['error', 'error'],
-			['debug', 'debug'],
-			['ERROR', 'error'],
-			[100, 100],
-			[999, 999],
+		yield 'nonexistent log level as lowercase string' => [
+			'inputLogLevel' => 'lorem',
+		];
+		yield 'nonexistent log level as uppercase string' => [
+			'inputLogLevel' => 'LOREM',
+		];
+		yield 'float value' => [
+			'inputLogLevel' => 100.0,
+		];
+		yield 'null value' => [
+			'inputLogLevel' => null,
 		];
 	}
 
 	/**
-	 * @dataProvider logLevelProvider
-	 *
-	 * @param string|int $inputLogLevel
-	 * @param string|int $normalizedValueLogLevel
-	 */
-	public function testConfigureLogLevel($inputLogLevel, $normalizedValueLogLevel): void
-	{
-		$this->load([
-			'exit_code' => [
-				'log_level' => $inputLogLevel,
-			],
-		]);
-
-		$this->assertContainerBuilderHasParameter(
-			ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
-			$normalizedValueLogLevel
-		);
-
-		$this->compile();
-	}
-
-	/**
-	 * @return mixed[][]
-	 */
-	public function invalidLogLevelProvider(): array
-	{
-		return [
-			['lorem'],
-			['LOREM'],
-			[100.0],
-			[null],
-		];
-	}
-
-	/**
-	 * @dataProvider invalidLogLevelProvider
+	 * @dataProvider invalidLogLevelDataProvider
 	 *
 	 * @param string|int $inputLogLevel
 	 */
