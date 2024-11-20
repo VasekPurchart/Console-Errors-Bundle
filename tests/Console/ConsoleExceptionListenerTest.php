@@ -6,6 +6,7 @@ namespace VasekPurchart\ConsoleErrorsBundle\Console;
 
 use Closure;
 use Generator;
+use PHPUnit\Framework\Assert;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +20,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 	/**
 	 * @return mixed[]|\Generator
 	 */
-	public function eventMethodProvider(): Generator
+	public function eventMethodDataProvider(): Generator
 	{
 		yield 'onConsoleError' => [
 			'methodCallback' => static function (ConsoleExceptionListener $listener, ConsoleErrorEvent $event): void {
@@ -35,7 +36,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @dataProvider eventMethodProvider
+	 * @dataProvider eventMethodDataProvider
 	 *
 	 * @param \Closure $methodCallback
 	 */
@@ -48,12 +49,12 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
-			->expects($this->once())
+			->expects(self::once())
 			->method('log')
-			->with($logLevel, $this->logicalAnd(
-				$this->stringContains($commandName),
-				$this->stringContains($message)
-			), $this->contains($exception, true));
+			->with($logLevel, Assert::logicalAnd(
+				Assert::stringContains($commandName),
+				Assert::stringContains($message)
+			), Assert::contains($exception, true));
 
 		$command = new Command($commandName);
 		$input = $this->createMock(InputInterface::class);
@@ -67,7 +68,7 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @dataProvider eventMethodProvider
+	 * @dataProvider eventMethodDataProvider
 	 *
 	 * @param \Closure $methodCallback
 	 */
@@ -79,9 +80,9 @@ class ConsoleExceptionListenerTest extends \PHPUnit\Framework\TestCase
 		$logLevel = LogLevel::DEBUG;
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger
-			->expects($this->once())
+			->expects(self::once())
 			->method('log')
-			->with($logLevel, $this->stringContains($message), $this->contains($exception, true));
+			->with($logLevel, Assert::stringContains($message), Assert::contains($exception, true));
 
 		$input = $this->createMock(InputInterface::class);
 		$output = $this->createMock(OutputInterface::class);
