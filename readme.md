@@ -23,7 +23,7 @@ Configuration
 Configuration structure with listed default values:
 
 ```yaml
-# config/packages/console_errors.yml
+# config/packages/console_errors.yaml
 console_errors:
     exceptions:
         # Enable logging for exceptions.
@@ -44,7 +44,7 @@ console_errors:
 
 Symfony by default always converts errors to PHP exceptions. Warnings and notices are converted by default only in development environment. If you want to configure your application to always convert warnings and notices to exceptions use the `debug.error_handler.throw_at` parameter (see [PHP manual](http://php.net/manual/en/errorfunc.constants.php) for other available values):
 ```yaml
-# config/packages/framework.yml
+# config/packages/framework.yaml
 parameters:
     debug.error_handler.throw_at: -1
 ```
