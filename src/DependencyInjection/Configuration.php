@@ -84,16 +84,16 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 	}
 
 	/**
-	 * @param string $parameterName
-	 * @param string $parameterInfo
+	 * @param string $nodeName
+	 * @param string $info
 	 * @param string|int $defaultValue
 	 * @return \Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition
 	 */
-	private function createLogLevelNode(string $parameterName, string $parameterInfo, $defaultValue): ScalarNodeDefinition
+	private function createLogLevelNode(string $nodeName, string $info, $defaultValue): ScalarNodeDefinition
 	{
-		$logLevelNode = new ScalarNodeDefinition($parameterName);
+		$logLevelNode = new ScalarNodeDefinition($nodeName);
 		$logLevelNode
-			->info($parameterInfo)
+			->info($info)
 			->defaultValue($defaultValue)
 			->beforeNormalization()
 				->ifString()
