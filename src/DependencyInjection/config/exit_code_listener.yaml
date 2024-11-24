@@ -2,8 +2,8 @@ services:
     vasek_purchart.console_errors.console.console_exit_code_listener:
         class: 'VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExitCodeListener'
         arguments:
-            - '@vasek_purchart.console_errors.console.logger'
-            - '%vasek_purchart.console_errors.error.log_level%'
+            $logger: '@vasek_purchart.console_errors.console.logger'
+            $logLevel: '%vasek_purchart.console_errors.error.log_level%'
         tags:
             -
                 name: 'kernel.event_listener'

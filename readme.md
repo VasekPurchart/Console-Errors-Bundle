@@ -56,7 +56,7 @@ services:
     my_logger:
         class: 'Monolog\Logger'
         arguments:
-            - 'my_channel'
+            $name: 'my_channel'
 
     vasek_purchart.console_errors.console.logger: '@my_logger'
 ```
