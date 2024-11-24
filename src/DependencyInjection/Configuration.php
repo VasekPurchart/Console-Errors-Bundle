@@ -91,8 +91,8 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 	 */
 	private function createLogLevelNode(string $nodeName, string $info, $defaultValue): ScalarNodeDefinition
 	{
-		$logLevelNode = new ScalarNodeDefinition($nodeName);
-		$logLevelNode
+		$node = new ScalarNodeDefinition($nodeName);
+		$node
 			->info($info)
 			->defaultValue($defaultValue)
 			->beforeNormalization()
@@ -119,7 +119,7 @@ class Configuration implements \Symfony\Component\Config\Definition\Configuratio
 				->end()
 			->end();
 
-		return $logLevelNode;
+		return $node;
 	}
 
 }
