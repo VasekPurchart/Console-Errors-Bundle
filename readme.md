@@ -29,7 +29,7 @@ console_errors:
         # Enable logging for exceptions.
         enabled: true
         # Log level with which exceptions should be logged (accepts string or integer values).
-        log_level: error
+        log_level: 'error'
         # Priority with which the listener will be registered.
         listener_priority: 0
 
@@ -37,7 +37,7 @@ console_errors:
         # Enable logging for non-zero exit codes.
         enabled: true
         # Log level with which exit codes should be logged (accepts string or integer values).
-        log_level: error
+        log_level: 'error'
         # Priority with which the listener will be registered.
         listener_priority: 0
 ```
