@@ -1,0 +1,11 @@
+services:
+    vasek_purchart.console_errors.console.console_exception_listener:
+        class: 'VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExceptionListener'
+        arguments:
+            $logger: '@vasek_purchart.console_errors.console.logger'
+            $logLevel: '%vasek_purchart.console_errors.exception.log_level%'
+        tags:
+            -
+                name: 'kernel.event_listener'
+                event: 'console.error'
+                priority: '%vasek_purchart.console_errors.exception.listener_priority%'

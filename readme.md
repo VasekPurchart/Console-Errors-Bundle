@@ -23,13 +23,13 @@ Configuration
 Configuration structure with listed default values:
 
 ```yaml
-# config/packages/console_errors.yml
+# config/packages/console_errors.yaml
 console_errors:
     exceptions:
         # Enable logging for exceptions.
         enabled: true
         # Log level with which exceptions should be logged (accepts string or integer values).
-        log_level: error
+        log_level: 'error'
         # Priority with which the listener will be registered.
         listener_priority: 0
 
@@ -37,14 +37,14 @@ console_errors:
         # Enable logging for non-zero exit codes.
         enabled: true
         # Log level with which exit codes should be logged (accepts string or integer values).
-        log_level: error
+        log_level: 'error'
         # Priority with which the listener will be registered.
         listener_priority: 0
 ```
 
 Symfony by default always converts errors to PHP exceptions. Warnings and notices are converted by default only in development environment. If you want to configure your application to always convert warnings and notices to exceptions use the `debug.error_handler.throw_at` parameter (see [PHP manual](http://php.net/manual/en/errorfunc.constants.php) for other available values):
 ```yaml
-# config/packages/framework.yml
+# config/packages/framework.yaml
 parameters:
     debug.error_handler.throw_at: -1
 ```
@@ -56,7 +56,7 @@ services:
     my_logger:
         class: 'Monolog\Logger'
         arguments:
-            - 'my_channel'
+            $name: 'my_channel'
 
     vasek_purchart.console_errors.console.logger: '@my_logger'
 ```

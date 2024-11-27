@@ -52,7 +52,7 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
 		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
 			'event' => 'console.terminate',
-			'priority' => '%' . ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY . '%',
+			'priority' => '%vasek_purchart.console_errors.error.listener_priority%',
 		]);
 
 		$this->compile();
@@ -105,13 +105,13 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	{
 		yield 'default listener_priority' => [
 			'configuration' => [],
-			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+			'parameterName' => 'vasek_purchart.console_errors.error.listener_priority',
 			'expectedParameterValue' => Configuration::DEFAULT_EXIT_CODE_LISTENER_PRIORITY,
 		];
 
 		yield 'default log_level' => [
 			'configuration' => [],
-			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+			'parameterName' => 'vasek_purchart.console_errors.error.log_level',
 			'expectedParameterValue' => Configuration::DEFAULT_EXIT_CODE_LOG_LEVEL,
 		];
 
@@ -121,7 +121,7 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 					'listener_priority' => 123,
 				],
 			],
-			'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LISTENER_PRIORITY,
+			'parameterName' => 'vasek_purchart.console_errors.error.listener_priority',
 			'expectedParameterValue' => 123,
 		];
 
@@ -132,7 +132,7 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 						'log_level' => $caseData['inputLogLevel'],
 					],
 				],
-				'parameterName' => ConsoleErrorsExtension::CONTAINER_PARAMETER_EXIT_CODE_LOG_LEVEL,
+				'parameterName' => 'vasek_purchart.console_errors.error.log_level',
 				'expectedParameterValue' => $caseData['normalizedValueLogLevel'],
 			];
 		}
