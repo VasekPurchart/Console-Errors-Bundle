@@ -5,20 +5,14 @@ declare(strict_types = 1);
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
 use Generator;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExitCodeListener;
 
-class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase
+class ConsoleErrorsExtensionExitCodeTest extends \PHPUnit\Framework\TestCase
 {
-
-	/**
-	 * @return \Symfony\Component\DependencyInjection\Extension\ExtensionInterface[]
-	 */
-	protected function getContainerExtensions(): array
-	{
-		return [
-			new ConsoleErrorsExtension(),
-		];
-	}
 
 	/**
 	 * @return mixed[][]|\Generator
@@ -47,28 +41,41 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 		array $configuration
 	): void
 	{
-		$this->load($configuration);
+		$container = self::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
 
-		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exit_code_listener', ConsoleExitCodeListener::class);
-		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exit_code_listener', 'kernel.event_listener', [
-			'event' => 'console.terminate',
-			'priority' => '%vasek_purchart.console_errors.error.listener_priority%',
-		]);
+		self::loadRegisteredExtension($container, $configuration);
 
-		$this->compile();
+		$serviceId = 'vasek_purchart.console_errors.console.console_exit_code_listener';
+		self::assertContainerHasService($container, $serviceId);
+		self::assertContainerServiceIsOfType($container, $serviceId, ConsoleExitCodeListener::class);
+		self::assertContainerServiceHasTagWithAttributes(
+			$container,
+			$serviceId,
+			'kernel.event_listener',
+			[
+				'event' => 'console.terminate',
+				'priority' => '%vasek_purchart.console_errors.error.listener_priority%',
+			]
+		);
+
+		$container->compile();
 	}
 
 	public function testErrorsDisabled(): void
 	{
-		$this->load([
+		$container = self::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
+
+		self::loadRegisteredExtension($container, [
 			'exit_code' => [
 				'enabled' => false,
 			],
 		]);
 
-		$this->assertContainerBuilderNotHasService('vasek_purchart.console_errors.console.console_exit_code_listener');
+		self::assertContainerDoesNotHaveService($container, 'vasek_purchart.console_errors.console_exit_code_listener');
 
-		$this->compile();
+		$container->compile();
 	}
 
 	/**
@@ -151,11 +158,15 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 		$expectedParameterValue
 	): void
 	{
-		$this->load($configuration);
+		$container = self::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
 
-		$this->assertContainerBuilderHasParameter($parameterName, $expectedParameterValue);
+		self::loadRegisteredExtension($container, $configuration);
 
-		$this->compile();
+		self::assertContainerHasParameter($container, $parameterName);
+		Assert::assertSame($expectedParameterValue, $container->getParameter($parameterName));
+
+		$container->compile();
 	}
 
 	/**
@@ -184,13 +195,158 @@ class ConsoleErrorsExtensionExitCodeTest extends \Matthias\SymfonyDependencyInje
 	 */
 	public function testConfigureLogLevelInvalidValues($inputLogLevel): void
 	{
+		$container = self::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
+
 		$this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
 
-		$this->load([
+		self::loadRegisteredExtension($container, [
 			'exit_code' => [
 				'log_level' => $inputLogLevel,
 			],
 		]);
+	}
+
+	public static function createContainer(): ContainerBuilder
+	{
+		$container = new ContainerBuilder(new ParameterBag([]));
+		$container->getCompilerPassConfig()->setOptimizationPasses([]);
+		$container->getCompilerPassConfig()->setRemovingPasses([]);
+		$container->getCompilerPassConfig()->setAfterRemovingPasses([]);
+
+		return $container;
+	}
+
+	public static function assertContainerHasService(
+		ContainerBuilder $container,
+		string $serviceId
+	): void
+	{
+		Assert::assertTrue(
+			$container->has($serviceId),
+			sprintf('Expecting the container to have service `%s`.', $serviceId)
+		);
+	}
+
+	public static function assertContainerDoesNotHaveService(
+		ContainerBuilder $container,
+		string $serviceId
+	): void
+	{
+		Assert::assertFalse(
+			$container->has($serviceId),
+			sprintf('Expecting the container to not have service `%s`.', $serviceId)
+		);
+	}
+
+	public static function assertContainerServiceIsOfType(
+		ContainerBuilder $container,
+		string $serviceId,
+		string $expectedClassString
+	): void
+	{
+		$serviceDefinition = $container->findDefinition($serviceId);
+
+		Assert::assertSame(
+			$expectedClassString,
+			$container->getParameterBag()->resolveValue($serviceDefinition->getClass()),
+			sprintf('Expecting the service `%s` to be of type `%s`.', $serviceId, $expectedClassString)
+		);
+	}
+
+	public static function assertContainerHasParameter(
+		ContainerBuilder $container,
+		string $parameterName
+	): void
+	{
+		Assert::assertTrue(
+			$container->hasParameter($parameterName),
+			sprintf('Expecting the container to have parameter `%s`.', $parameterName)
+		);
+	}
+
+	public static function assertContainerServiceHasTag(
+		ContainerBuilder $container,
+		string $serviceId,
+		string $tagName
+	): void
+	{
+		$serviceDefinition = $container->findDefinition($serviceId);
+
+		Assert::assertTrue(
+			$serviceDefinition->hasTag($tagName),
+			sprintf('Expecting the service `%s` to have tag `%s`.', $serviceId, $tagName)
+		);
+	}
+
+	/**
+	 * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+	 * @param string $serviceId
+	 * @param string $tagName
+	 * @param mixed[]|array $expectedTagAttributes
+	 */
+	public static function assertContainerServiceHasTagWithAttributes(
+		ContainerBuilder $container,
+		string $serviceId,
+		string $tagName,
+		array $expectedTagAttributes
+	): void
+	{
+		self::assertContainerServiceHasTag($container, $serviceId, $tagName);
+
+		$serviceDefinition = $container->findDefinition($serviceId);
+		$allTagAttributes = $serviceDefinition->getTag($tagName);
+
+		if (count($allTagAttributes) === 0) {
+			Assert::fail(sprintf('Expecting the tag `%s` to have attributes.', $tagName));
+		}
+
+		foreach ($allTagAttributes as $tagAttributes) {
+			Assert::assertSame(
+				$expectedTagAttributes,
+				$tagAttributes,
+				sprintf('Expecting the tag `%s` to have expected attributes.', $serviceId)
+			);
+		}
+	}
+
+	/**
+	 * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+	 * @param mixed[][]|array $configuration
+	 */
+	public static function loadRegisteredExtension(
+		ContainerBuilder $container,
+		array $configuration = []
+	): void
+	{
+		$registeredExtensionsCount = count($container->getExtensions());
+
+		assert(
+			$registeredExtensionsCount === 1,
+			sprintf('There are %d extensions registered but one is expected', $registeredExtensionsCount)
+		);
+
+		self::loadRegisteredExtensionsUsingCommonConfiguration($container, $configuration);
+	}
+
+	/**
+	 * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+	 * @param mixed[][]|array $configuration
+	 */
+	private static function loadRegisteredExtensionsUsingCommonConfiguration(
+		ContainerBuilder $container,
+		array $configuration = []
+	): void
+	{
+		foreach ($container->getExtensions() as $extension) {
+			if ($extension instanceof PrependExtensionInterface) {
+				$extension->prepend($container);
+			}
+		}
+
+		foreach ($container->getExtensions() as $extension) {
+			$extension->load([$configuration], $container);
+		}
 	}
 
 }

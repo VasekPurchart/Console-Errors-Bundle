@@ -5,20 +5,11 @@ declare(strict_types = 1);
 namespace VasekPurchart\ConsoleErrorsBundle\DependencyInjection;
 
 use Generator;
+use PHPUnit\Framework\Assert;
 use VasekPurchart\ConsoleErrorsBundle\Console\ConsoleExceptionListener;
 
-class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase
+class ConsoleErrorsExtensionExceptionsTest extends \PHPUnit\Framework\TestCase
 {
-
-	/**
-	 * @return \Symfony\Component\DependencyInjection\Extension\ExtensionInterface[]
-	 */
-	protected function getContainerExtensions(): array
-	{
-		return [
-			new ConsoleErrorsExtension(),
-		];
-	}
 
 	/**
 	 * @return mixed[][]|\Generator
@@ -41,38 +32,58 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	/**
 	 * @dataProvider exceptionsEnabledDataProvider
 	 *
-	 * @param mixed[][] $configuration
+	 * @param mixed[][]|array $configuration
 	 */
 	public function testExceptionsEnabled(
 		array $configuration
 	): void
 	{
-		$this->load($configuration);
+		$container = ConsoleErrorsExtensionExitCodeTest::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
 
-		$this->assertContainerBuilderHasService('vasek_purchart.console_errors.console.console_exception_listener', ConsoleExceptionListener::class);
-		$this->assertContainerBuilderHasServiceDefinitionWithTag('vasek_purchart.console_errors.console.console_exception_listener', 'kernel.event_listener', [
-			'event' => 'console.error',
-			'priority' => '%vasek_purchart.console_errors.exception.listener_priority%',
-		]);
+		ConsoleErrorsExtensionExitCodeTest::loadRegisteredExtension($container, $configuration);
 
-		$this->compile();
+		$serviceId = 'vasek_purchart.console_errors.console.console_exception_listener';
+		ConsoleErrorsExtensionExitCodeTest::assertContainerHasService($container, $serviceId);
+		ConsoleErrorsExtensionExitCodeTest::assertContainerServiceIsOfType(
+			$container,
+			$serviceId,
+			ConsoleExceptionListener::class
+		);
+		ConsoleErrorsExtensionExitCodeTest::assertContainerServiceHasTagWithAttributes(
+			$container,
+			$serviceId,
+			'kernel.event_listener',
+			[
+				'event' => 'console.error',
+				'priority' => '%vasek_purchart.console_errors.exception.listener_priority%',
+			]
+		);
+
+		$container->compile();
 	}
 
 	public function testExceptionsDisabled(): void
 	{
-		$this->load([
+		$container = ConsoleErrorsExtensionExitCodeTest::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
+
+		ConsoleErrorsExtensionExitCodeTest::loadRegisteredExtension($container, [
 			'exceptions' => [
 				'enabled' => false,
 			],
 		]);
 
-		$this->assertContainerBuilderNotHasService('vasek_purchart.console_errors.console.console_exception_listener');
+		ConsoleErrorsExtensionExitCodeTest::assertContainerDoesNotHaveService(
+			$container,
+			'vasek_purchart.console_errors.console.console_exception_listener'
+		);
 
-		$this->compile();
+		$container->compile();
 	}
 
 	/**
-	 * @return mixed[][]|\Generator
+	 * @return mixed[]|\Generator
 	 */
 	public function logLevelDataProvider(): Generator
 	{
@@ -151,11 +162,15 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 		$expectedParameterValue
 	): void
 	{
-		$this->load($configuration);
+		$container = ConsoleErrorsExtensionExitCodeTest::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
 
-		$this->assertContainerBuilderHasParameter($parameterName, $expectedParameterValue);
+		ConsoleErrorsExtensionExitCodeTest::loadRegisteredExtension($container, $configuration);
 
-		$this->compile();
+		ConsoleErrorsExtensionExitCodeTest::assertContainerHasParameter($container, $parameterName);
+		Assert::assertSame($expectedParameterValue, $container->getParameter($parameterName));
+
+		$container->compile();
 	}
 
 	/**
@@ -184,9 +199,12 @@ class ConsoleErrorsExtensionExceptionsTest extends \Matthias\SymfonyDependencyIn
 	 */
 	public function testConfigureLogLevelInvalidValues($inputLogLevel): void
 	{
+		$container = ConsoleErrorsExtensionExitCodeTest::createContainer();
+		$container->registerExtension(new ConsoleErrorsExtension());
+
 		$this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
 
-		$this->load([
+		ConsoleErrorsExtensionExitCodeTest::loadRegisteredExtension($container, [
 			'exceptions' => [
 				'log_level' => $inputLogLevel,
 			],
